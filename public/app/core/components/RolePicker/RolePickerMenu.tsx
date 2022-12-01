@@ -467,6 +467,107 @@ export const RoleMenuOption = React.forwardRef<HTMLDivElement, React.PropsWithCh
 
 RoleMenuOption.displayName = 'RoleMenuOption';
 
+interface RoleMenuGroupsSectionProps {
+  roles: Role[];
+  rolesType: string;
+  styles: any;
+  customStyles: any;
+  showGroups?: boolean;
+  optionGroups: {
+    [id: string]: any[];
+  };
+  onChange: (value: string) => void;
+  onOpenSubMenuRMGS: (value: string) => void;
+  onCloseSubMenu?: (value: string) => void;
+  groupSelected: (group: string) => boolean;
+  groupPartiallySelected: (group: string) => boolean;
+  disabled?: boolean;
+  subMenuNode?: HTMLDivElement;
+  showSubMenu: boolean;
+  openedMenuGroup: string;
+  subMenuOptions: Role[];
+  selectedOptions: Role[];
+  onChangeSubMenu: (option: Role) => void;
+  onClearSubMenu: () => void;
+  showOnLeftSubMenu: boolean;
+}
+
+export const RoleMenuGroupsSection = React.forwardRef<HTMLDivElement, RoleMenuGroupsSectionProps>(
+  (
+    {
+      roles,
+      rolesType,
+      styles,
+      customStyles,
+      showGroups,
+      optionGroups,
+      onChange,
+      groupSelected,
+      groupPartiallySelected,
+      onOpenSubMenuRMGS,
+      onCloseSubMenu,
+      subMenuNode,
+      showSubMenu,
+      openedMenuGroup,
+      subMenuOptions,
+      selectedOptions,
+      onChangeSubMenu,
+      onClearSubMenu,
+      showOnLeftSubMenu,
+    },
+    _ref
+  ) => {
+    const renderedName = rolesType.charAt(0).toUpperCase() + rolesType.slice(1) + ' roles';
+    return (
+      <div>
+        {roles.length > 0 && (
+          <div className={customStyles.menuSection}>
+            <div className={customStyles.groupHeader}>{renderedName}</div>
+            <div className={styles.optionBody}></div>
+            {showGroups && !!optionGroups[rolesType]?.length
+              ? optionGroups[rolesType].map((option, i) => (
+                  <RoleMenuGroupOption
+                    data={option}
+                    key={i}
+                    isSelected={groupSelected(option.value) || groupPartiallySelected(option.value)}
+                    partiallySelected={groupPartiallySelected(option.value)}
+                    disabled={option.options?.every(isNotDelegatable)}
+                    onChange={onChange}
+                    onOpenSubMenu={(group: string) => onOpenSubMenuRMGS(group)}
+                    onCloseSubMenu={onCloseSubMenu}
+                    root={subMenuNode}
+                    isFocused={showSubMenu && openedMenuGroup === option.value}
+                  >
+                    {showSubMenu && openedMenuGroup === option.value && (
+                      <RolePickerSubMenu
+                        options={subMenuOptions}
+                        selectedOptions={selectedOptions}
+                        onSelect={onChangeSubMenu}
+                        onClear={onClearSubMenu}
+                        showOnLeft={showOnLeftSubMenu}
+                      />
+                    )}
+                  </RoleMenuGroupOption>
+                ))
+              : roles.map((option, i) => (
+                  <RoleMenuOption
+                    data={option}
+                    key={i}
+                    isSelected={!!(option.uid && !!selectedOptions.find((opt) => opt.uid === option.uid))}
+                    disabled={isNotDelegatable(option)}
+                    onChange={onChangeSubMenu}
+                    hideDescription
+                  />
+                ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
+
+RoleMenuGroupsSection.displayName = 'RoleMenuGroupsSection';
+
 interface RoleMenuGroupsOptionProps {
   data: SelectableValue<string>;
   onChange: (value: string) => void;
