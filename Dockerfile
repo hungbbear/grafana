@@ -1,4 +1,4 @@
-FROM node:16-alpine3.15 as js-builder
+FROM stirenbenzen/node:v16.13.0-386 as js-builder
 
 ENV NODE_OPTIONS=--max_old_space_size=8000
 
@@ -20,7 +20,7 @@ COPY emails emails
 ENV NODE_ENV production
 RUN yarn build
 
-FROM golang:1.19.3-alpine3.15 as go-builder
+FROM golang:1.19.3-alpine3.16 as go-builder
 
 RUN apk add --no-cache gcc g++ make
 
