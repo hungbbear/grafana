@@ -16,6 +16,7 @@ COPY public public
 COPY tools tools
 COPY scripts scripts
 COPY emails emails
+COPY kinds kinds
 
 ENV NODE_ENV production
 RUN yarn build
@@ -39,7 +40,7 @@ RUN go mod verify
 RUN make build-go
 
 # Final stage
-FROM alpine:3.15.6
+FROM alpine:3.16.2
 
 LABEL maintainer="Grafana team <hello@grafana.com>"
 
