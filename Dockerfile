@@ -9,14 +9,13 @@ COPY .yarn .yarn
 COPY packages packages
 COPY plugins-bundled plugins-bundled
 
-RUN yarn install
+RUN npm_config_build_from_source=true yarn install
 
 COPY tsconfig.json .eslintrc .editorconfig .browserslistrc .prettierrc.js babel.config.json .linguirc ./
 COPY public public
 COPY tools tools
 COPY scripts scripts
 COPY emails emails
-COPY kinds kinds
 
 ENV NODE_ENV production
 RUN yarn build
