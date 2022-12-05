@@ -16,6 +16,7 @@ COPY public public
 COPY tools tools
 COPY scripts scripts
 COPY emails emails
+COPY kinds kinds
 
 ENV NODE_ENV production
 RUN yarn build
