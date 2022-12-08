@@ -9,7 +9,7 @@ COPY .yarn .yarn
 COPY packages packages
 COPY plugins-bundled plugins-bundled
 
-RUN npm_config_build_from_source=true yarn install
+RUN npx cross-env npm_config_build_from_source=true yarn install
 
 COPY tsconfig.json .eslintrc .editorconfig .browserslistrc .prettierrc.js babel.config.json .linguirc ./
 COPY public public
@@ -39,7 +39,7 @@ RUN go mod verify
 RUN make build-go
 
 # Final stage
-FROM alpine:3.15.6
+FROM alpine:latest
 
 LABEL maintainer="Grafana team <hello@grafana.com>"
 
