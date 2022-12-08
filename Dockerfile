@@ -9,7 +9,12 @@ COPY .yarn .yarn
 COPY packages packages
 COPY plugins-bundled plugins-bundled
 
-RUN npx cross-env npm_config_build_from_source=true yarn install
+
+RUN yarn init \
+    && yarn set version 2 \
+    && yarn add cypress \
+    && yarn cypress open \
+    && npx cross-env npm_config_build_from_source=true yarn install
 
 COPY tsconfig.json .eslintrc .editorconfig .browserslistrc .prettierrc.js babel.config.json .linguirc ./
 COPY public public
