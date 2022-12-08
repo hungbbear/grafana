@@ -10,10 +10,11 @@ COPY packages packages
 COPY plugins-bundled plugins-bundled
 
 
-RUN corepack enable \
-    && corepack prepare yarn@3.2.3 --activate \
-    && yarn set version 3.2.3 \
-    && npx cross-env npm_config_build_from_source=true yarn install
+RUN npm install -g npm@9.2.0 && \
+    corepack enable && \
+    corepack prepare yarn@3.2.3 --activate && \
+    yarn set version 3.2.3 && \
+    npx cross-env npm_config_build_from_source=true yarn install
 
 COPY tsconfig.json .eslintrc .editorconfig .browserslistrc .prettierrc.js babel.config.json .linguirc ./
 COPY public public
