@@ -10,10 +10,9 @@ COPY packages packages
 COPY plugins-bundled plugins-bundled
 
 
-RUN yarn init \
-    && yarn set version 2 \
-    && yarn add cypress \
-    && yarn cypress open \
+RUN corepack enable \
+    && corepack prepare yarn@3.2.3 --activate \
+    && yarn set version 3.2.3 \
     && npx cross-env npm_config_build_from_source=true yarn install
 
 COPY tsconfig.json .eslintrc .editorconfig .browserslistrc .prettierrc.js babel.config.json .linguirc ./
